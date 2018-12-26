@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+     <textarea cols="20" rows="10" id="biao1">
+     <p>复制自带尾巴,不信你试 </p>
+     </textarea>
+<input type="button" onClick="copyText()" value="点击复制代码" />
+    账号:<input type='text' oncopy="alert('不能复制');return false;" > <br />
+    <!-- 在工作中一般直接return false -->
+    密码:<input type='password' onpaste="alert('不能粘贴');return false;" >  
+    </body>
+</html>
+<script>
+//定义一个增加尾巴的方法
+     function addLink() {
+    var body_element = document.body; 
+    var name='卢涛涛';
+    //使用 window.getSelection() 方法获取鼠标划取部分的起始位置和结束位置
+    //返回一个  Selection 对象，表示用户选择的文本范围或光标的当前位置。
+    var selection = window.getSelection();
+    //获取当前地址
+    var locationHref=document.location.href;
+    var appendLink="\r\n\r\n <br> 原文出自[ "+name+"的个人博客 ] 转载请保留原文链接: <a href='"+locationHref+"'>"+locationHref+"</a>";
+    //window.clipboardData的作用是在页面上将需要的东西复制到剪贴板上，提供了对于预定义的剪贴板格式的访问，以便在编辑操作中使用。
+    if (window.clipboardData) { // 仅支持IE 否则为undefinedr                
+        var copytext = selection + appendLink;
+        window.clipboardData.setData ("Text", copytext);
+        return false;
+    } else {
+        //组装数据 文本内容+尾巴
+        var copytext = selection + appendLink; 
+        //新建一个div
+        var newdiv = document.createElement('div');
+        //使用绝对定位 把div放在最后
+        newdiv.style.position='absolute';
+        newdiv.style.left='-99999px';
+        //插入一个子元素
+        body_element.appendChild(newdiv);
+        //把内容赋给创建的div
+        newdiv.innerHTML = copytext;
+        //重新获取内容
+        selection.selectAllChildren(newdiv);
+        //setTimeout() 方法用于在指定的毫秒数后调用函数或计算表达式
+        //立刻删除创建的div
+        window.setTimeout(function() {
+            body_element.removeChild(newdiv);
+        },0);
+    }
+}
+//复制时触发函数
+document.oncopy = addLink;
+//这里可能会有浏览器内核兼容问题  compatiblecopy中有解决方案
+function copyText()
+{
+var text=document.getElementById("biao1");
+text.select(); // 选择对象
+document.execCommand("Copy"); // 执行浏览器复制命令
+alert("已复制好，可贴粘。");
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
